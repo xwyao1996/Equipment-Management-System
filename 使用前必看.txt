@@ -1,0 +1,8 @@
+==============================X-Admin======================
+
+1. 打开mysql，导入数据库 test.sql，在你的数据库连接上右键运行sql，选择test.sql就行了。
+2. 配置application.yml文件，将里面的数据库名称、用户名、密码，配置成你本地的。
+3. 启动项目，选择Application.java，右键运行就可以了。
+4. 访问路径：http://localhost:8080/page/end/login.html
+登录账号：admin 密码：admin
+

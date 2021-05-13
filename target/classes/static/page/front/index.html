@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/base.css">
+
+    <style>
+        .el-header{
+            background-color: #4a3636;
+            color: #333;
+            line-height: 60px;
+        }
+        .el-main {
+            width: 60%;
+            padding-top: 0;
+            margin: 0 auto;
+            background-color: #E9EEF3;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <el-container>
+            <!-- header -->
+            <el-header>
+                <div style="width: 60%">
+
+                </div>
+            </el-header>
+            <!-- Main -->
+            <el-main>
+                <el-col :span="20" :offset="2">
+                    <el-carousel height="420px">
+                        <el-carousel-item v-for="item in 4" :key="item">
+                            <img :src=`/file/carousel/carousel-${item}.jpg` alt="">
+                        </el-carousel-item>
+                    </el-carousel>
+                </el-col>
+            </el-main>
+        </el-container>
+    </div>
+
+<!--    js-->
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/base.js"></script>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/element.js"></script>
+
+    <script>
+        new Vue({
+            el: "#wrapper",
+            data: {
+
+            },
+            created() {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

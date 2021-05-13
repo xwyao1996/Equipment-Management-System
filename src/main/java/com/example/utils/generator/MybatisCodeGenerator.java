@@ -23,14 +23,14 @@ public class MybatisCodeGenerator {
     private static final DruidDataSource ds = new DruidDataSource();
 
     private static final String schemaName = "test";   // 数据库名称，必填
-    private static final String[][] tables = {{"t_category", "Category"}};   // 必填
-    private static final String modelName = "分类";   // 必填
+    private static final String[][] tables = {{"t_server", "Server"}};   // 必填
+    private static final String modelName = "服务器";   // 必填
 
     static {
         // 必填
         ds.setUrl("jdbc:mysql://localhost:3306/" + schemaName + "?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8");
         ds.setUsername("root");
-        ds.setPassword("123456");
+        ds.setPassword("root");
     }
 
     private static final String BaseFilePath = System.getProperty("user.dir") + "/src/main/java/com/example/";
