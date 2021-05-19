@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 14/05/2021 09:32:46
+ Date: 19/05/2021 20:12:27
 */
 
 SET NAMES utf8mb4;
@@ -33,12 +33,13 @@ CREATE TABLE `t_equip`  (
   `price` double(10, 2) NULL DEFAULT NULL COMMENT '价值',
   `user` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '使用人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_equip
 -- ----------------------------
 INSERT INTO `t_equip` VALUES (1, '固态硬盘', 'TY2015004034', 20150450, '磁盘机', '223实验室', '闲置', '李永', 1998.89, '无');
+INSERT INTO `t_equip` VALUES (2, '机械硬盘', 'TY2134102401', 202021414, '磁盘机', '218实验室', '使用', '姚翔文', 752.36, '汤艺');
 
 -- ----------------------------
 -- Table structure for t_gpu
@@ -54,13 +55,33 @@ CREATE TABLE `t_gpu`  (
   `xcapacity` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '显存容量',
   `xtyp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '显存类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_gpu
 -- ----------------------------
 INSERT INTO `t_gpu` VALUES (1, 'RTX3080', 'HDMI,DP,PCI-E 4.0', '索泰ZOTAC', 'NIVIDA', '1440-1770MHZ', '10GB', 'GDDR6X');
 INSERT INTO `t_gpu` VALUES (2, 'RTX2080', 'PCI-E 3.0', '槃雷', 'NIVIDA', '1220-1450MHZ', '5GB', 'GDDR6');
+
+-- ----------------------------
+-- Table structure for t_harddisk
+-- ----------------------------
+DROP TABLE IF EXISTS `t_harddisk`;
+CREATE TABLE `t_harddisk`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '名称',
+  `brand` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '品牌',
+  `interfac` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '接口',
+  `vector` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '容量',
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '类型',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_harddisk
+-- ----------------------------
+INSERT INTO `t_harddisk` VALUES (1, '1号硬盘', '西部数据', 'USB3.0 USB2.0', '2TB', '移动硬盘');
+INSERT INTO `t_harddisk` VALUES (2, '2号硬盘', '希捷', 'USB3.0', '4TB', '固态硬盘');
 
 -- ----------------------------
 -- Table structure for t_pcc
@@ -76,7 +97,7 @@ CREATE TABLE `t_pcc`  (
   `sys` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '系统',
   `typ` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '型号',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2011000946 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_pcc
@@ -94,7 +115,7 @@ CREATE TABLE `t_permission`  (
   `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单路径',
   `flag` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '唯一标识',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限菜单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_permission
@@ -117,13 +138,14 @@ CREATE TABLE `t_role`  (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `permission` varchar(2000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限列表',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_role
 -- ----------------------------
 INSERT INTO `t_role` VALUES (1, '超级管理员', '所有权限', '[{\"id\":1,\"name\":\"用户管理\",\"path\":\"/page/end/user.html\",\"description\":null,\"flag\":\"user\"},{\"id\":2,\"name\":\"角色管理\",\"path\":\"/page/end/role.html\",\"description\":null,\"flag\":\"role\"},{\"id\":3,\"name\":\"权限管理\",\"path\":\"/page/end/permission.html\",\"description\":null,\"flag\":\"permission\"},{\"id\":4,\"name\":\"插件管理\",\"path\":\"/page/end/plugins.html\",\"description\":\"插件管理\",\"flag\":\"plugins\"},{\"id\":18,\"name\":\"聊天室\",\"path\":\"/page/end/im.html\",\"description\":\"聊天室\",\"flag\":\"im\"},{\"id\":25,\"name\":\"设备管理\",\"path\":\"/page/end/equip.html\",\"description\":\"设备管理\",\"flag\":\"equip\"},{\"id\":26,\"name\":\"主机管理\",\"path\":\"/page/end/pcc.html\",\"description\":\"主机管理\",\"flag\":\"pcc\"}]');
 INSERT INTO `t_role` VALUES (2, '普通用户', '部分权限', '[{\"id\":4,\"name\":\"插件管理\",\"path\":\"/page/end/plugins.html\",\"description\":\"插件管理\",\"flag\":\"plugins\"},{\"id\":18,\"name\":\"聊天室\",\"path\":\"/page/end/im.html\",\"description\":\"聊天室\",\"flag\":\"im\"}]');
+INSERT INTO `t_role` VALUES (3, '3123', 'fraewf', '[{\"id\":2,\"name\":\"角色管理\",\"path\":\"/page/end/role.html\",\"description\":\"角色管理\",\"flag\":\"role\"},{\"id\":3,\"name\":\"权限管理\",\"path\":\"/page/end/permission.html\",\"description\":\"权限管理\",\"flag\":\"permission\"},{\"id\":4,\"name\":\"插件管理\",\"path\":\"/page/end/plugins.html\",\"description\":\"插件管理\",\"flag\":\"plugins\"}]');
 
 -- ----------------------------
 -- Table structure for t_server
@@ -164,7 +186,7 @@ CREATE TABLE `t_user`  (
   `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '职位',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uni`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_user
