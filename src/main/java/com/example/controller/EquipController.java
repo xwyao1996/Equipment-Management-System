@@ -47,7 +47,10 @@ public class EquipController {
     public Result<IPage<Equip>> findPage(@RequestParam(required = false, defaultValue = "") String name,
                                            @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                            @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-        return Result.success(equipService.page(new Page<>(pageNum, pageSize), Wrappers.<Equip>lambdaQuery().like(Equip::getName, name)));
+        return Result.success(equipService.page(new Page<>(pageNum, pageSize), Wrappers.<Equip>lambdaQuery().like(Equip::getName, name)
+                .or().like(Equip::getAssetid, name).or().like(Equip::getBuyer, name).or().like(Equip::getCheckid, name)
+                .or().like(Equip::getLocation, name).or().like(Equip::getNms, name).or().like(Equip::getUser, name)
+                .or().like(Equip::getStatus, name).or().like(Equip::getPrice, name)));
     }
 
 }
