@@ -1,21 +1,72 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : MySQL
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80023
+ Source Server Version : 80021
  Source Host           : localhost:3306
  Source Schema         : test
 
  Target Server Type    : MySQL
- Target Server Version : 80023
+ Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 19/05/2021 20:12:27
+ Date: 22/06/2021 15:40:56
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for equip_server_soft
+-- ----------------------------
+DROP TABLE IF EXISTS `equip_server_soft`;
+CREATE TABLE `equip_server_soft`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务器名称',
+  `ser_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务器IP',
+  `ser_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务器类别',
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'root用户名',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'root用户密码',
+  `ser_os` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务器操作系统',
+  `ipmi_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IPMI_IP',
+  `ib_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IB_IP',
+  `ipmi_admin_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IPMI信息，用“/”分隔用户名和密码',
+  `ser_purpose` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务器用途',
+  `ser_owner` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '使用人',
+  `ser_belong` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务器所属实验室',
+  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注信息',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of equip_server_soft
+-- ----------------------------
+INSERT INTO `equip_server_soft` VALUES (1, 'test1', NULL, NULL, 'root', '123456', 'win10', NULL, NULL, NULL, NULL, NULL, '218', NULL);
+
+-- ----------------------------
+-- Table structure for equip_vm
+-- ----------------------------
+DROP TABLE IF EXISTS `equip_vm`;
+CREATE TABLE `equip_vm`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '虚拟机名称',
+  `master_ser` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '虚拟机挂靠服务器',
+  `vm_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '虚拟机IP',
+  `vm_os` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '虚拟机操作系统',
+  `vm_admin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'root用户名',
+  `vm_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'root用户密码',
+  `is_for_demo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否存放演示程序，填“是”或“否”',
+  `vm_purpose` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '虚拟机用途，如果存放演示程序应在此字段中准确描述',
+  `vm_owner` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '虚拟机使用人',
+  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of equip_vm
+-- ----------------------------
+INSERT INTO `equip_vm` VALUES (1, 'test1', '[{\"id\":1,\"name\":\"test1\",\"serIp\":null,\"serType\":null,\"username\":\"root\",\"password\":\"123456\",\"serOs\":\"win10\",\"ipmiIp\":null,\"ibIp\":null,\"ipmiAdminPassword\":null,\"serPurpose\":null,\"serOwner\":null,\"serBelong\":\"218\",\"remarks\":null}]', '123', 'Linux', 'root', '123456', '是', NULL, NULL, '存放了演示程序demo01\n路径为: /home/');
 
 -- ----------------------------
 -- Table structure for t_equip
@@ -75,7 +126,7 @@ CREATE TABLE `t_harddisk`  (
   `vector` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '容量',
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '类型',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_harddisk
@@ -162,7 +213,7 @@ CREATE TABLE `t_server`  (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '密码',
   `brand` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '品牌',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_server

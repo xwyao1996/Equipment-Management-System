@@ -13,13 +13,16 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-        Object user = request.getSession().getAttribute("user");
-        if (user != null) {
-            request.getSession().setAttribute("user", user);
-            return true;
-        }
-        response.sendRedirect("/page/end/login.html");
-        return false;
+        // 关闭登陆验证
+        return true;
+
+//        Object user = request.getSession().getAttribute("user");
+//        if (user != null) {
+//            request.getSession().setAttribute("user", user);
+//            return true;
+//        }
+//        response.sendRedirect("/page/end/login.html");
+//        return false;
     }
 
 }
