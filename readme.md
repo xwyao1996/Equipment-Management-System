@@ -117,7 +117,7 @@
   
   容易出现不显示数据的情况，应该强制让其从第一页开始显示数据。
 
-![image-20210705155014273](D:\workspace\Github\Equipment-Management-System\readme.assets\image-20210705155014273.png)
+![image-20210705155014273](./readme.assets/image-20210705155014273.png)
 
 - [ ] 5.不能在搜索框中填了内容的情况下翻页，会自动查询。
 
