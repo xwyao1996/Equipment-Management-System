@@ -6,6 +6,7 @@ import com.example.mapper.ServerSoftMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class ServerSoftService extends ServiceImpl<ServerSoftMapper, ServerSoft> {
@@ -13,4 +14,7 @@ public class ServerSoftService extends ServiceImpl<ServerSoftMapper, ServerSoft>
     @Resource
     private ServerSoftMapper serverSoftMapper;
 
+    public List<ServerSoft> findByRemarks(String remarks) {
+        return serverSoftMapper.findByRemarks(remarks);
+    }
 }

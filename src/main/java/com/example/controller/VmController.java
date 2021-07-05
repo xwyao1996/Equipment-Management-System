@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.common.Result;
+import com.example.entity.ServerSoft;
 import com.example.entity.Vm;
 import com.example.service.VmService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -47,7 +48,7 @@ public class VmController {
     public Result<IPage<Vm>> findPage(@RequestParam(required = false, defaultValue = "") String name,
                                            @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                            @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-        return Result.success(vmService.page(new Page<>(pageNum, pageSize), Wrappers.<Vm>lambdaQuery().like(Vm::getName, name)));
+        return Result.success(vmService.page(new Page<>(pageNum, pageSize), Wrappers.<Vm>lambdaQuery().like(Vm::getName, name).or().like(Vm::getRemarks, name)));
     }
 
 }

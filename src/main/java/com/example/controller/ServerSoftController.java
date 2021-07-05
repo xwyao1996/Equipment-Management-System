@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/serverSoft")
 public class ServerSoftController {
     @Resource
-     private ServerSoftService serverSoftService;
+    private ServerSoftService serverSoftService;
 
     @PostMapping
     public Result<?> save(@RequestBody ServerSoft serverSoft) {
@@ -38,6 +38,11 @@ public class ServerSoftController {
         return Result.success(serverSoftService.getById(id));
     }
 
+    @GetMapping("/remarks/{remarks}")
+    public Result<List<ServerSoft>> findByRemarks(@PathVariable String remarks) {
+        return Result.success(serverSoftService.findByRemarks(remarks));
+    }
+
     @GetMapping
     public Result<List<ServerSoft>> findAll() {
         return Result.success(serverSoftService.list());
@@ -45,9 +50,9 @@ public class ServerSoftController {
 
     @GetMapping("/page")
     public Result<IPage<ServerSoft>> findPage(@RequestParam(required = false, defaultValue = "") String name,
-                                           @RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                                           @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-        return Result.success(serverSoftService.page(new Page<>(pageNum, pageSize), Wrappers.<ServerSoft>lambdaQuery().like(ServerSoft::getName, name)));
+                                              @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                              @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        return Result.success(serverSoftService.page(new Page<>(pageNum, pageSize), Wrappers.<ServerSoft>lambdaQuery().like(ServerSoft::getName, name).or().like(ServerSoft::getRemarks, name)));
     }
 
 }

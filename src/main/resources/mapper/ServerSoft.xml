@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.ServerSoftMapper">
 
+<select id="findByRemarks" resultType="com.example.entity.ServerSoft">
+    select * from equip_server_soft where remarks like CONCAT('%', #{remarks}, '%')
+</select>
+
 </mapper>
