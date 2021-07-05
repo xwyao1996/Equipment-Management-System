@@ -44,10 +44,32 @@
                     <div style="height: 1px; background-color: white"></div>
                     <el-input v-model="search" style="width: 20%;" suffix-icon="el-icon-search" placeholder="请输入名称按回车搜索"
                         @keyup.enter.native="loadTable"></el-input>
+                    <el-button @click="clearFilter" type="primary" size="mini" tyle="margin: 10px 0">清除所有过滤器</el-button>
                     <el-button @click="add" type="primary" size="mini" style="margin: 10px 0">新增</el-button>
                     <!-- <el-button @click="exp" type="primary" size="mini" style="margin: 10px 0">导出</el-button> -->
-                    <el-table :data="tableData" border style="width: 100%">
-                        <el-table-column :prop="item.prop" :label="item.label" v-for="item in props">
+                    <el-table ref="filterTable" :data="tableData" border style="width: 100%">
+                        <!-- 因为表格中的部分列要进行筛选，所以不用v-for生成表格 -->
+                        <el-table-column prop="name" label="虚拟机名称">
+                        </el-table-column>
+                        <el-table-column prop="vmIp" label="IP">
+                        </el-table-column>
+                        <el-table-column prop="vmAdmin" label="登录用户名">
+                        </el-table-column>
+                        <el-table-column prop="vmPassword" label="登录密码">
+                        </el-table-column>
+                        <el-table-column prop="vmOs" label="操作系统" sortable column-key="vmOs"
+                            :filters="[{text: 'Windows', value: 'Windows'}, {text: 'Linux', value: 'Linux'}]"
+                            :filter-method="filterHandler">
+                        </el-table-column>
+                        <el-table-column prop="vmOwner" label="使用人" sortable>
+                        </el-table-column>
+                        <el-table-column prop="isForDemo" label="存放演示程序" sortable column-key="isForDemo"
+                            :filters="[{text: '是', value: '是'}, {text: '否', value: '否'}]"
+                            :filter-method="filterHandler">
+                        </el-table-column>
+                        <el-table-column prop="vmPurpose" label="虚拟机用途">
+                        </el-table-column>
+                        <el-table-column prop="remarks" label="备注">
                         </el-table-column>
                         <el-table-column label="挂靠服务器">
                             <template slot-scope="scope">
@@ -75,10 +97,21 @@
                         </el-pagination>
                     </div>
                     <!-- 在这里针对每个不同的模型定制新建/编辑的表单-->
-                    <el-dialog title="虚拟机信息" :visible.sync="dialogFormVisible" width="40%" close-on-click-modal="false"
-                        close-on-press-escape="false" show-close="false">
-                        <el-form :model="entity" @submit.native.prevent="save" :label-position="left"
-                            label-width="100px" :rules="rules">
+                    <el-dialog
+                        title="虚拟机信息"
+                        :visible.sync="dialogFormVisible"
+                        width="40%"
+                        close-on-click-modal="false"
+                        close-on-press-escape="false"
+                        show-close="false">
+                        <el-form
+                            :model="entity"
+                            @submit.native.prevent="save"
+                            :label-position="left"
+                            label-width="100px"
+                            :rules="rules"
+                            ref="ruleForm"
+                        >
                             <el-form-item label="虚拟机名称" prop="name">
                                 <el-col :span="8">
                                     <el-input v-model="entity.name" maxlength="10" show-word-limit></el-input>
@@ -112,18 +145,28 @@
                                 <el-switch v-model="entity.isForDemo" active-value="是" inactive-value="否">
                                 </el-switch>
                             </el-form-item>
+                            <el-form-item label="使用人" prop="vmOwner">
+                                <el-col :span="8">
+                                    <el-input v-model="entity.vmOwner" maxlength="10" show-word-limit></el-input>
+                                </el-col>
+                            </el-form-item>
+                            <el-form-item label="用途" prop="vmPurpose">
+                                <el-col :span="16">
+                                    <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 4 }"
+                                        v-model="entity.vmPurpose"></el-input>
+                                </el-col>
+                            </el-form-item>
                             <el-form-item label="备注信息" prop="remarks">
                                 <el-col :span="16">
                                     <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }"
                                         v-model="entity.remarks"></el-input>
                                 </el-col>
                             </el-form-item>
-
+                            <el-form-item>
+                                <el-button type="primary" @click="save('ruleForm')">立即创建</el-button>
+                                <el-button @click="dialogFormVisible = false">取消</el-button>
+                            </el-form-item>
                         </el-form>
-                        <div slot="footer" class="dialog-footer">
-                            <el-button @click="dialogFormVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="save">确 定</el-button>
-                        </div>
                     </el-dialog>
 
                 </el-main>
@@ -158,18 +201,8 @@
                 entity: {},         // 当前被创建，编辑的一条数据
                 isCollapse: false,
                 search: '',
-                options: [],   //这里存放虚拟机可挂靠的服务器对象
-                props: [{ "label": "ID", "prop": "id" },
-                { "label": "虚拟机名称", "prop": "name" },
-                { "label": "虚拟器IP", "prop": "vmIp" },
-                { "label": "登录用户名", "prop": "vmAdmin" },
-                { "label": "登录密码", "prop": "vmPassword" },
-                { "label": "虚拟机操作系统", "prop": "vmOs" },   // 通过下拉框选择，页面写死
-                { "label": "虚拟机使用人", "prop": "vmOwner" },
-                { "label": "是否存放演示程序", "prop": "isForDemo" },   // 通过滑动开关选择
-                { "label": "虚拟机用途", "prop": "vmPurpose" },
-                { "label": "备注", "prop": "remarks" }
-                ],
+                options: [], // 这里存放虚拟机可挂靠的服务器对象
+
                 // 增加表单校验规则
                 rules: {
                     name: [
@@ -187,23 +220,28 @@
                     vmOs: [
                         { required: true, message: '请选择操作系统', trigger: 'change' }
                     ],
+                    vmOwner: [{ required: true, message: '请输入使用人', trigger: 'blur' },],
+                    vmPurpose: [
+                        { required: true, message: '请输入服务器用途', trigger: 'blur' },
+                        { min: 0, max: 200, message: '长度最大为200个字符', trigger: 'blur' }
+                    ],
                     remarks: [
-                        { required: false, message: '请输入活动名称', trigger: 'blur' },
+                        { required: false, message: '请输入备注信息', trigger: 'blur' },
                         { min: 0, max: 200, message: '长度最大为200个字符', trigger: 'blur' }
                     ],
                 }
+            
             },
             created() {
                 this.user = sessionStorage.getItem("user") ? JSON.parse(sessionStorage.getItem("user")) : {};
                 this.loadTable();
             },
-
             methods: {
                 changeSer(row) {
                     this.entity = row;
                     // 对masterSer属性进行包装，变成对象数组，满足后端需要
                     this.entity.masterSer = [row.masterSer];
-                    this.save();
+                    this.save1();
                 },
                 handleCollapse() {
                     this.isCollapse = !this.isCollapse;
@@ -242,7 +280,7 @@
                     this.entity = {};
                     this.dialogFormVisible = true;
                 },
-                save() {
+                save1() {
                     let type = this.entity.id ? "PUT" : "POST";
                     $.ajax({
                         url: urlBase,
@@ -264,6 +302,39 @@
                         }
                         this.dialogFormVisible = false;
                     })
+                },
+                save(formName) {
+                    this.$refs[formName].validate((valid) => {
+                        if (valid) {
+                            let type = this.entity.id ? "PUT" : "POST";
+                            $.ajax({
+                                url: urlBase,
+                                type: type,
+                                contentType: "application/json",
+                                data: JSON.stringify(this.entity)
+                            }).then(res => {
+                                if (res.code === '0') {
+                                    this.$message({
+                                        message: "保存成功",
+                                        type: "success"
+                                    });
+                                    this.loadTable();
+                                } else {
+                                    this.$message({
+                                        message: "res.msg",
+                                        type: "error"
+                                    })
+                                }
+                                this.dialogFormVisible = false;
+                            })
+                        } else {
+                            this.$message({
+                                message: "无效的创建数据",
+                                type: "warning"
+                            })
+                            return false;
+                        }
+                    });
                 },
                 edit(obj) {
                     this.entity = obj;
@@ -287,6 +358,13 @@
                             })
                         }
                     })
+                },
+                clearFilter() {
+                    this.$refs.filterTable.clearFilter();
+                },
+                filterHandler(value, row, column) {
+                    const property = column['property'];
+                    return row[property] === value;
                 }
             }
         })

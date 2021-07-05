@@ -1,3 +1,11 @@
+# 0. Quick Start
+
+访问路径：http://localhost:8080/page/end/login.html
+
+用户名：admin 密码：admin
+
+
+
 # 1. 导航菜单设置
 
 --1 设备管理<br />
@@ -16,7 +24,7 @@
 
 # 2. 系统合并后表的关系：
 
-![img](.\\readme.assets\\clipboard.png)
+![img](./readme.assets/clipboard.png)
 
 
 # 3. MySQL命名规范
@@ -68,3 +76,39 @@
 |   虚拟机使用人   |  vm_owner   | varchar  |      | Y        |                                      |
 |       备注       |   remarks   | varchar  |      | Y        |                                      |
 
+# 5. 问题记录
+
+- [x] 1. 虚拟机不应该能挂靠在两个服务器上
+
+![clipboard](./readme.assets/clipboard-1625450332257.png)
+
+**修复过程：**
+
+不修改后端
+
+作为外键的字段masterSer，传给后端是`entity.masterSer` 必须是一个ArrayList。
+
+从后端返回的`entity.masterSer` 是一个ArrayList。
+
+为了满足单选的逻辑，去掉`el-select`中的`multiple`属性，然后自己对vue中的数据进行包装，满足后端的需要。
+
+在单选的情况下，`row.masterSer`是一个对象，需要包装为list发往后端。
+
+相应的，前端接收后端数据时，也要把masterSer字段中的数据从list中解出，因为单选框不能接受list。
+
+---
+
+- [ ] 2. 侧边栏长度不能随页面数据条数动态调整
+
+![image-20210705100204442](./readme.assets/image-20210705100204442.png)
+
+
+
+
+
+
+
+
+- [ ] 3. 筛选只对分页数据有效，不符合使用逻辑
+
+![image-20210705100903496](./readme.assets/image-20210705100903496.png)
